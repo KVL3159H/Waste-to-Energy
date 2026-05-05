@@ -1,15 +1,15 @@
 import React from 'react';
 import AlertsPanel from '../components/AlertsPanel';
+import { useTranslation } from '../contexts/LanguageContext';
 
 export default function AlertsPage({ alerts, onAcknowledge }) {
+  const { t } = useTranslation();
+
   return (
     <div className="page-content animate-fade-in">
       <div className="page-header">
-        <div>
-          <h1 className="page-title">SYSTEM ALERTS</h1>
-          <p className="page-subtitle">Manage and acknowledge facility alerts and warnings</p>
-        </div>
-        <div className="telemetry-badge">MONITOR: ACTIVE</div>
+        <h1 className="page-title">{t('page.alerts.title')}</h1>
+        <p className="page-subtitle">{t('page.alerts.subtitle')}</p>
       </div>
       
       <div className="alerts-layout">

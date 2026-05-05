@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { formatDateTime } from '../utils';
+import { useTranslation } from '../contexts/LanguageContext';
 
 const styles = {
   card: {
@@ -7,29 +8,25 @@ const styles = {
   },
   cardPulse: {
     padding: '28px',
-    borderColor: '#E85D04',
-    boxShadow: '0 0 20px rgba(232, 93, 4, 0.4)',
+    borderColor: '#3B82F6',
+    boxShadow: '0 0 0 1px #3B82F6, 0 10px 24px rgba(0, 0, 0, 0.08)',
   },
   title: {
-    fontSize: '15px',
+    fontSize: '16px',
     fontWeight: 600,
-    color: '#9CA3AF',
+    color: '#0F172A',
     marginBottom: '20px',
-    letterSpacing: '1px',
-    textTransform: 'uppercase',
+    letterSpacing: '-0.2px',
   },
   wasteType: {
-    fontSize: '36px',
-    fontWeight: 800,
-    color: '#F8F9FA',
+    fontSize: '32px',
+    fontWeight: 700,
+    color: '#1E293B',
     marginBottom: '16px',
-    letterSpacing: '1px',
-    textTransform: 'uppercase',
-    textShadow: '0 0 10px rgba(255,255,255,0.2)',
   },
   placeholder: {
     fontSize: '14px',
-    color: '#64748B',
+    color: '#94A3B8',
     fontStyle: 'italic',
     padding: '20px 0',
   },
@@ -38,15 +35,13 @@ const styles = {
   },
   confidenceLabel: {
     fontSize: '13px',
-    fontWeight: 600,
-    color: '#9CA3AF',
+    fontWeight: 500,
+    color: '#64748B',
     marginBottom: '8px',
-    letterSpacing: '1px',
-    textTransform: 'uppercase',
   },
   barTrack: {
-    background: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: '4px',
+    background: '#F1F5F9',
+    borderRadius: '8px',
     height: '6px',
     overflow: 'hidden',
   },
@@ -54,21 +49,19 @@ const styles = {
     width: `${width}%`,
     height: '100%',
     background: color,
-    borderRadius: '4px',
+    borderRadius: '8px',
     transition: 'width 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1)',
-    boxShadow: `0 0 8px ${color}`,
   }),
   timestamp: {
     fontSize: '12px',
-    color: '#E85D04',
+    color: '#94A3B8',
     marginTop: '24px',
-    fontFamily: "'JetBrains Mono', monospace",
-    textTransform: 'uppercase',
   },
 };
 
 export default function ClassificationFeed({ classification }) {
   const [pulse, setPulse] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (classification) {
@@ -80,9 +73,9 @@ export default function ClassificationFeed({ classification }) {
 
   if (!classification) {
     return (
-      <div className="glass-panel" style={styles.card}>
-        <div style={styles.title}>OPTICAL FEED</div>
-        <div className="mono-text" style={styles.placeholder}>WAITING FOR VISUAL DATA...</div>
+      <div className="white-card" style={styles.card}>
+        <div style={styles.title}>{t('vision.title')}</div>
+        <div style={styles.placeholder}>{t('vision.waiting')}</div>
       </div>
     );
   }
@@ -90,9 +83,10 @@ export default function ClassificationFeed({ classification }) {
   const { waste_type, confidence, timestamp } = classification;
   const confPct = confidence * 100;
 
-  let confColor = '#2DC653';
-  if (confPct < 60) confColor = '#D32F2F';
-  else if (confPct < 85) confColor = '#FFB703';
+  // Uses the requested Ex Machina color palette
+  let confColor = '#10B981'; // Mint green
+  if (confPct < 60) confColor = '#EF4444'; // Alert red
+  else if (confPct < 85) confColor = '#3B82F6'; // Cool blue
 
   const cardStyle = {
     ...styles.card,
@@ -100,18 +94,18 @@ export default function ClassificationFeed({ classification }) {
   };
 
   return (
-    <div className="glass-panel" style={cardStyle}>
-      <div style={styles.title}>OPTICAL FEED</div>
-      <div style={styles.wasteType}>{waste_type ?? 'UNKNOWN'}</div>
+    <div className="white-card" style={cardStyle}>
+      <div style={styles.title}>{t('vision.title')}</div>
+      <div style={styles.wasteType}>{waste_type ?? t('vision.unknown')}</div>
       <div style={styles.confidenceSection}>
         <div style={styles.confidenceLabel}>
-          MATCH PROBABILITY: <span className="mono-text" style={{ color: confColor }}>{confPct.toFixed(1)}%</span>
+          {t('vision.confidence')} <span style={{ color: confColor, fontWeight: 600 }}>{confPct.toFixed(1)}%</span>
         </div>
         <div style={styles.barTrack}>
           <div style={styles.barFill(confColor, confPct)} />
         </div>
       </div>
-      <div style={styles.timestamp}>CAPTURE_TIME: {formatDateTime(timestamp)}</div>
+      <div style={styles.timestamp}>{formatDateTime(timestamp)}</div>
     </div>
   );
 }

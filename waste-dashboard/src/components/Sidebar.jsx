@@ -1,13 +1,13 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, LineChart, Eye, Bell } from 'lucide-react';
+import { LayoutDashboard, BarChart3, Eye, Bell } from 'lucide-react';
+import { useTranslation } from '../contexts/LanguageContext';
 
 const styles = {
   sidebar: {
     width: '260px',
-    background: 'rgba(20, 30, 45, 0.7)',
-    backdropFilter: 'blur(10px)',
-    borderRight: '1px solid rgba(255, 255, 255, 0.1)',
+    background: '#FFFFFF',
+    borderRight: '1px solid #E2E8F0',
     display: 'flex',
     flexDirection: 'column',
     height: '100vh',
@@ -17,68 +17,53 @@ const styles = {
   },
   header: {
     padding: '28px 24px',
-    borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-  },
-  logoArea: {
+    borderBottom: '1px solid #E2E8F0',
     display: 'flex',
     alignItems: 'center',
     gap: '12px',
   },
   logo: {
-    width: '40px',
-    height: '40px',
-    background: '#141E2D',
-    border: '2px solid #E85D04',
+    width: '36px',
+    height: '36px',
+    background: '#EFF6FF',
+    borderRadius: '8px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    color: '#E85D04',
-    fontFamily: "'JetBrains Mono', monospace",
-    fontWeight: 800,
-    fontSize: '14px',
-    clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)', // Hexagon shape
-  },
-  titleArea: {
-    display: 'flex',
-    flexDirection: 'column',
+    color: '#3B82F6',
+    fontWeight: 700,
+    fontSize: '15px',
+    letterSpacing: '-0.5px',
   },
   title: {
-    fontSize: '13px',
-    fontWeight: 700,
-    color: '#F8F9FA',
-    letterSpacing: '1px',
-    fontFamily: "'JetBrains Mono', monospace",
-  },
-  badge: {
-    fontSize: '10px',
-    color: '#FFB703',
-    letterSpacing: '2px',
-    marginTop: '2px',
-    fontFamily: "'JetBrains Mono', monospace",
+    fontSize: '16px',
+    fontWeight: 600,
+    color: '#0F172A',
+    letterSpacing: '-0.3px',
   },
   nav: {
-    padding: '32px 0',
+    padding: '32px 16px',
     display: 'flex',
     flexDirection: 'column',
+    gap: '6px',
     flex: 1,
   },
   navLink: {
     display: 'flex',
     alignItems: 'center',
-    gap: '14px',
-    padding: '16px 24px',
+    gap: '12px',
+    padding: '12px 16px',
     textDecoration: 'none',
-    color: '#9CA3AF',
-    fontFamily: "'JetBrains Mono', monospace",
-    fontSize: '13px',
-    letterSpacing: '1px',
+    color: '#64748B',
+    fontWeight: 500,
+    fontSize: '14px',
+    borderRadius: '10px',
     transition: 'all 0.2s ease',
-    borderLeft: '4px solid transparent',
   },
   activeLink: {
-    backgroundColor: 'rgba(232, 93, 4, 0.1)',
-    color: '#E85D04',
-    borderLeft: '4px solid #E85D04',
+    backgroundColor: '#EFF6FF',
+    color: '#3B82F6',
+    fontWeight: 600,
   },
   icon: {
     width: '18px',
@@ -87,16 +72,13 @@ const styles = {
 };
 
 export default function Sidebar() {
+  const { t } = useTranslation();
+
   return (
     <aside style={styles.sidebar}>
       <div style={styles.header}>
-        <div style={styles.logoArea}>
-          <div style={styles.logo}>W2W</div>
-          <div style={styles.titleArea}>
-            <div style={styles.title}>ARES 3</div>
-            <div style={styles.badge}>MISSION CTRL</div>
-          </div>
-        </div>
+        <div style={styles.logo}>W2W</div>
+        <div style={styles.title}>{t('app.title')}</div>
       </div>
       <nav style={styles.nav}>
         <NavLink 
@@ -104,28 +86,28 @@ export default function Sidebar() {
           style={({ isActive }) => isActive ? { ...styles.navLink, ...styles.activeLink } : styles.navLink}
         >
           <LayoutDashboard style={styles.icon} />
-          TELEMETRY
+          {t('nav.dashboard')}
         </NavLink>
         <NavLink 
           to="/analytics" 
           style={({ isActive }) => isActive ? { ...styles.navLink, ...styles.activeLink } : styles.navLink}
         >
-          <LineChart style={styles.icon} />
-          ANALYTICS
+          <BarChart3 style={styles.icon} />
+          {t('nav.analytics')}
         </NavLink>
         <NavLink 
           to="/vision" 
           style={({ isActive }) => isActive ? { ...styles.navLink, ...styles.activeLink } : styles.navLink}
         >
           <Eye style={styles.icon} />
-          AI VISION
+          {t('nav.vision')}
         </NavLink>
         <NavLink 
           to="/alerts" 
           style={({ isActive }) => isActive ? { ...styles.navLink, ...styles.activeLink } : styles.navLink}
         >
           <Bell style={styles.icon} />
-          ALERTS
+          {t('nav.alerts')}
         </NavLink>
       </nav>
     </aside>

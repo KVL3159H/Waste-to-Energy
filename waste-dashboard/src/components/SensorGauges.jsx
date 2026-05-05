@@ -1,19 +1,19 @@
 import React from 'react';
 import { clamp, getSeverity } from '../utils';
+import { useTranslation } from '../contexts/LanguageContext';
 
-const SEVERITY_COLORS = { normal: '#2DC653', warning: '#FFB703', critical: '#D32F2F' };
+const SEVERITY_COLORS = { normal: '#3B82F6', warning: '#8B5CF6', critical: '#EF4444' };
 
 const styles = {
   card: {
     padding: '28px',
   },
   title: {
-    fontSize: '15px',
+    fontSize: '16px',
     fontWeight: 600,
-    color: '#9CA3AF',
+    color: '#0F172A',
     marginBottom: '32px',
-    letterSpacing: '1px',
-    textTransform: 'uppercase',
+    letterSpacing: '-0.2px',
   },
   grid: {
     display: 'grid',
@@ -28,15 +28,12 @@ const styles = {
   },
   label: { 
     fontSize: '14px', 
-    fontWeight: 600, 
-    color: '#E5E7EB',
-    letterSpacing: '1px',
-    textTransform: 'uppercase',
+    fontWeight: 500, 
+    color: '#64748B',
   },
   unit: { 
     fontSize: '12px', 
-    color: '#64748B',
-    fontFamily: "'JetBrains Mono', monospace",
+    color: '#94A3B8',
   },
 };
 
@@ -62,9 +59,9 @@ const GaugeArc = ({ value, max, color }) => {
 
   return (
     <svg width="120" height="90" viewBox="0 0 120 90">
-      <path d={track} fill="none" stroke="rgba(255, 255, 255, 0.1)" strokeWidth={strokeWidth} strokeLinecap="round" />
+      <path d={track} fill="none" stroke="#F1F5F9" strokeWidth={strokeWidth} strokeLinecap="round" />
       {fill && <path d={fill} fill="none" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" style={{ transition: 'stroke-dashoffset 0.4s' }} />}
-      <text x={cx} y={cy - 4} textAnchor="middle" dominantBaseline="middle" className="mono-text" fontSize="20" fontWeight="700">
+      <text x={cx} y={cy - 4} textAnchor="middle" dominantBaseline="middle" fontSize="22" fontWeight="700" fill="#1E293B">
         {value != null ? (Number.isInteger(value) ? value : value.toFixed(1)) : '—'}
       </text>
     </svg>
@@ -78,20 +75,22 @@ const Gauge = ({ label, unit, value, max, warn, crit }) => {
     <div style={styles.gauge}>
       <GaugeArc value={value ?? 0} max={max} color={color} />
       <div style={styles.label}>{label}</div>
-      <div style={styles.unit}>[{unit}]</div>
+      <div style={styles.unit}>{unit}</div>
     </div>
   );
 };
 
 export default function SensorGauges({ sensor }) {
+  const { t } = useTranslation();
+
   return (
-    <div className="glass-panel" style={styles.card}>
-      <div style={styles.title}>LIVE SENSOR TELEMETRY</div>
+    <div className="white-card" style={styles.card}>
+      <div style={styles.title}>{t('sensors.title')}</div>
       <div style={styles.grid}>
-        <Gauge label="METHANE" unit="ppm" value={sensor?.methane_ppm} max={1000} warn={500} crit={800} />
-        <Gauge label="CORE TEMP" unit="°C" value={sensor?.temperature_c} max={100} warn={50} crit={70} />
-        <Gauge label="HUMIDITY" unit="%" value={sensor?.humidity_pct} max={100} />
-        <Gauge label="MOISTURE" unit="%" value={sensor?.moisture_pct} max={100} />
+        <Gauge label={t('sensors.methane')} unit="ppm" value={sensor?.methane_ppm} max={1000} warn={500} crit={800} />
+        <Gauge label={t('sensors.temp')} unit="°C" value={sensor?.temperature_c} max={100} warn={50} crit={70} />
+        <Gauge label={t('sensors.humidity')} unit="%" value={sensor?.humidity_pct} max={100} />
+        <Gauge label={t('sensors.moisture')} unit="%" value={sensor?.moisture_pct} max={100} />
       </div>
     </div>
   );

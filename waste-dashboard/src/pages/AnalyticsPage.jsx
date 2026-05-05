@@ -2,16 +2,16 @@ import React from 'react';
 import HistoricalCharts from '../components/HistoricalCharts';
 import CarbonCreditEstimator from '../components/CarbonCreditEstimator';
 import ExportButton from '../components/ExportButton';
+import { useTranslation } from '../contexts/LanguageContext';
 
 export default function AnalyticsPage({ historicalSensor, dailySummary, energyMetrics }) {
+  const { t } = useTranslation();
+
   return (
     <div className="page-content animate-fade-in">
       <div className="page-header">
-        <div>
-          <h1 className="page-title">DATA ANALYTICS</h1>
-          <p className="page-subtitle">Historical trends and offset calculations</p>
-        </div>
-        <div className="telemetry-badge">DATA LOG: NOMINAL</div>
+        <h1 className="page-title">{t('page.analytics.title')}</h1>
+        <p className="page-subtitle">{t('page.analytics.subtitle')}</p>
       </div>
       
       <div className="analytics-layout">

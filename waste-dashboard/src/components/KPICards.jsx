@@ -1,5 +1,6 @@
 import React from 'react';
 import { Flame, Zap, Leaf, Recycle } from 'lucide-react';
+import { useTranslation } from '../contexts/LanguageContext';
 
 const styles = {
   grid: {
@@ -9,6 +10,8 @@ const styles = {
   },
   card: {
     padding: '24px',
+    display: 'flex',
+    flexDirection: 'column',
   },
   header: {
     display: 'flex',
@@ -20,53 +23,49 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '32px',
-    height: '32px',
-    borderRadius: '50%',
-    border: `1px solid ${color}`,
+    width: '36px',
+    height: '36px',
+    borderRadius: '10px',
     color: color,
-    background: 'rgba(20, 30, 45, 0.4)',
+    background: `${color}1A`, // 10% opacity hex
   }),
   label: {
     fontSize: '13px',
-    fontWeight: 600,
-    color: '#9CA3AF',
-    textTransform: 'uppercase',
-    letterSpacing: '1px',
+    fontWeight: 500,
+    color: '#64748B',
   },
-  value: (color) => ({
+  value: {
     fontSize: '32px',
-    color: '#F8F9FA',
+    fontWeight: 700,
+    color: '#1E293B',
     lineHeight: 1.2,
     marginBottom: '4px',
-  }),
+  },
   unit: {
     fontSize: '14px',
-    color: '#9CA3AF',
+    fontWeight: 500,
+    color: '#94A3B8',
     marginLeft: '6px',
-    fontFamily: "'Inter', sans-serif",
   },
   footer: {
-    fontSize: '11px',
-    color: '#6B7280',
+    fontSize: '12px',
+    color: '#94A3B8',
     marginTop: '16px',
-    textTransform: 'uppercase',
-    letterSpacing: '1px',
   },
 };
 
 const formatValue = (val) => (val == null ? '—' : typeof val === 'number' ? val.toLocaleString() : val);
 
 const KpiCard = ({ label, value, unit, color, footer, icon: Icon }) => (
-  <div className="glass-panel" style={styles.card}>
+  <div className="white-card" style={styles.card}>
     <div style={styles.header}>
       <div style={styles.iconWrapper(color)}>
-        <Icon size={16} />
+        <Icon size={18} />
       </div>
       <div style={styles.label}>{label}</div>
     </div>
     <div>
-      <span className="mono-text" style={styles.value(color)}>{formatValue(value)}</span>
+      <span style={styles.value}>{formatValue(value)}</span>
       {value != null && unit && <span style={styles.unit}>{unit}</span>}
     </div>
     {footer && <div style={styles.footer}>{footer}</div>}
@@ -74,38 +73,40 @@ const KpiCard = ({ label, value, unit, color, footer, icon: Icon }) => (
 );
 
 export default function KPICards({ energyMetrics, dailySummary }) {
+  const { t } = useTranslation();
+
   return (
     <div style={styles.grid}>
       <KpiCard 
-        label="BIOGAS OUTPUT" 
+        label={t('kpi.biogas')}
         value={energyMetrics?.biogas_m3} 
         unit="m³" 
-        color="#E85D04" 
-        footer="CURRENT CYCLE" 
+        color="#3B82F6" 
+        footer={t('kpi.biogas.desc')}
         icon={Flame} 
       />
       <KpiCard 
-        label="POWER GENERATED" 
+        label={t('kpi.power')}
         value={energyMetrics?.kwh_generated} 
         unit="kWh" 
-        color="#FFB703" 
-        footer="ELECTRICAL YIELD" 
+        color="#8B5CF6" 
+        footer={t('kpi.power.desc')}
         icon={Zap} 
       />
       <KpiCard 
-        label="CO₂ OFFSET" 
+        label={t('kpi.co2')}
         value={energyMetrics?.co2_offset_kg} 
         unit="kg" 
-        color="#2DC653" 
-        footer="EMISSIONS REDUCED" 
+        color="#10B981" 
+        footer={t('kpi.co2.desc')}
         icon={Leaf} 
       />
       <KpiCard 
-        label="WASTE INTAKE" 
+        label={t('kpi.waste')}
         value={dailySummary?.waste_processed_kg} 
         unit="kg" 
         color="#3B82F6" 
-        footer="MATERIAL PROCESSED" 
+        footer={t('kpi.waste.desc')}
         icon={Recycle} 
       />
     </div>

@@ -4,6 +4,7 @@ import {
   BarChart, Bar,
 } from 'recharts';
 import { formatTime } from '../utils';
+import { useTranslation } from '../contexts/LanguageContext';
 
 const styles = {
   section: {
@@ -15,110 +16,109 @@ const styles = {
     padding: '24px 20px 20px 20px',
   },
   title: {
-    fontSize: '15px',
+    fontSize: '16px',
     fontWeight: 600,
-    color: '#9CA3AF',
+    color: '#0F172A',
     marginBottom: '24px',
     paddingLeft: '4px',
-    letterSpacing: '1px',
-    textTransform: 'uppercase',
+    letterSpacing: '-0.2px',
   },
   empty: {
     height: '220px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    color: '#64748B',
+    color: '#94A3B8',
     fontSize: '14px',
-    fontFamily: "'JetBrains Mono', monospace",
   },
 };
 
 const tooltipStyle = {
   contentStyle: {
-    background: 'rgba(11, 26, 47, 0.9)',
-    backdropFilter: 'blur(4px)',
-    border: '1px solid #E85D04',
-    borderRadius: '8px',
-    boxShadow: '0 4px 12px rgba(232, 93, 4, 0.2)',
+    background: '#FFFFFF',
+    border: '1px solid #3B82F6',
+    borderRadius: '12px',
+    boxShadow: '0 4px 16px rgba(59, 130, 246, 0.1)',
     padding: '12px 16px',
-    color: '#F8F9FA',
-    fontFamily: "'JetBrains Mono', monospace",
-    fontSize: '12px',
+    color: '#1E293B',
+    fontSize: '13px',
   },
-  labelStyle: { color: '#E85D04', fontWeight: 600, marginBottom: 8 },
+  labelStyle: { color: '#64748B', fontWeight: 500, marginBottom: 8 },
 };
 
-const axisStyle = { stroke: '#475569', fontSize: 11, tickLine: false, fontFamily: "'JetBrains Mono', monospace" };
+const axisStyle = { stroke: '#CBD5E1', fontSize: 12, tickLine: false, color: '#64748B' };
 
-const EmptyChart = () => <div style={styles.empty}>NO TELEMETRY DATA</div>;
+const EmptyChart = ({ t }) => <div style={styles.empty}>{t('charts.nodata')}</div>;
 
-const MethaneChart = ({ data }) => {
-  if (!data?.length) return <div className="glass-panel" style={styles.card}><div style={styles.title}>METHANE CONCENTRATION</div><EmptyChart /></div>;
+const MethaneChart = ({ data, t }) => {
+  if (!data?.length) return <div className="white-card" style={styles.card}><div style={styles.title}>{t('charts.methane')}</div><EmptyChart t={t} /></div>;
   return (
-    <div className="glass-panel" style={styles.card}>
-      <div style={styles.title}>METHANE CONCENTRATION (PPM)</div>
+    <div className="white-card" style={styles.card}>
+      <div style={styles.title}>{t('charts.methane')}</div>
       <ResponsiveContainer width="100%" height={240}>
         <LineChart data={data} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
-          <CartesianGrid stroke="#1E2A3A" strokeDasharray="4 4" vertical={false} />
-          <XAxis dataKey="timestamp" tickFormatter={formatTime} {...axisStyle} />
-          <YAxis {...axisStyle} width={45} />
-          <Tooltip {...tooltipStyle} labelFormatter={formatTime} formatter={(v) => [`${v} ppm`, 'Methane']} />
-          <Legend wrapperStyle={{ fontSize: 12, paddingTop: 8, fontFamily: "'JetBrains Mono', monospace", color: '#9CA3AF' }} />
-          <ReferenceLine y={500} stroke="#D32F2F" strokeDasharray="4 4" label={{ value: 'WARN: 500', fill: '#D32F2F', fontSize: 11, position: 'insideTopRight', fontFamily: "'JetBrains Mono', monospace" }} />
-          <Line type="monotone" dataKey="methane_ppm" stroke="#E85D04" strokeWidth={2} dot={false} name="Methane (ppm)" style={{ filter: 'drop-shadow(0 0 6px rgba(232, 93, 4, 0.6))' }} />
+          <CartesianGrid stroke="#E2E8F0" strokeDasharray="4 4" vertical={false} />
+          <XAxis dataKey="timestamp" tickFormatter={formatTime} {...axisStyle} tick={{ fill: '#64748B' }} />
+          <YAxis {...axisStyle} width={45} tick={{ fill: '#64748B' }} />
+          <Tooltip {...tooltipStyle} labelFormatter={formatTime} formatter={(v) => [`${v} ppm`, t('sensors.methane')]} />
+          <Legend wrapperStyle={{ fontSize: 13, paddingTop: 8, color: '#64748B' }} />
+          <ReferenceLine y={500} stroke="#EF4444" strokeDasharray="4 4" label={{ value: `${t('charts.warn')} 500`, fill: '#EF4444', fontSize: 11, position: 'insideTopRight' }} />
+          <Line type="monotone" dataKey="methane_ppm" stroke="#3B82F6" strokeWidth={2.5} dot={false} name={t('sensors.methane')} />
         </LineChart>
       </ResponsiveContainer>
     </div>
   );
 };
 
-const TemperatureChart = ({ data }) => {
-  if (!data?.length) return <div className="glass-panel" style={styles.card}><div style={styles.title}>CORE TEMPERATURE</div><EmptyChart /></div>;
+const TemperatureChart = ({ data, t }) => {
+  if (!data?.length) return <div className="white-card" style={styles.card}><div style={styles.title}>{t('charts.temp')}</div><EmptyChart t={t} /></div>;
   return (
-    <div className="glass-panel" style={styles.card}>
-      <div style={styles.title}>CORE TEMPERATURE (°C)</div>
+    <div className="white-card" style={styles.card}>
+      <div style={styles.title}>{t('charts.temp')}</div>
       <ResponsiveContainer width="100%" height={240}>
         <LineChart data={data} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
-          <CartesianGrid stroke="#1E2A3A" strokeDasharray="4 4" vertical={false} />
-          <XAxis dataKey="timestamp" tickFormatter={formatTime} {...axisStyle} />
-          <YAxis {...axisStyle} width={45} />
-          <Tooltip {...tooltipStyle} labelFormatter={formatTime} formatter={(v) => [`${v} °C`, 'Temp']} />
-          <Legend wrapperStyle={{ fontSize: 12, paddingTop: 8, fontFamily: "'JetBrains Mono', monospace", color: '#9CA3AF' }} />
-          <ReferenceLine y={50} stroke="#D32F2F" strokeDasharray="4 4" label={{ value: 'WARN: 50°C', fill: '#D32F2F', fontSize: 11, position: 'insideTopRight', fontFamily: "'JetBrains Mono', monospace" }} />
-          <Line type="monotone" dataKey="temperature_c" stroke="#FFB703" strokeWidth={2} dot={false} name="Temperature (°C)" style={{ filter: 'drop-shadow(0 0 4px rgba(255, 183, 3, 0.5))' }} />
+          <CartesianGrid stroke="#E2E8F0" strokeDasharray="4 4" vertical={false} />
+          <XAxis dataKey="timestamp" tickFormatter={formatTime} {...axisStyle} tick={{ fill: '#64748B' }} />
+          <YAxis {...axisStyle} width={45} tick={{ fill: '#64748B' }} />
+          <Tooltip {...tooltipStyle} labelFormatter={formatTime} formatter={(v) => [`${v} °C`, t('sensors.temp')]} />
+          <Legend wrapperStyle={{ fontSize: 13, paddingTop: 8, color: '#64748B' }} />
+          <ReferenceLine y={50} stroke="#EF4444" strokeDasharray="4 4" label={{ value: `${t('charts.warn')} 50°C`, fill: '#EF4444', fontSize: 11, position: 'insideTopRight' }} />
+          <Line type="monotone" dataKey="temperature_c" stroke="#8B5CF6" strokeWidth={2.5} dot={false} name={t('sensors.temp')} />
         </LineChart>
       </ResponsiveContainer>
     </div>
   );
 };
 
-const HumidityMoistureChart = ({ data }) => {
-  if (!data?.length) return <div className="glass-panel" style={styles.card}><div style={styles.title}>HUMIDITY & MOISTURE</div><EmptyChart /></div>;
+const HumidityMoistureChart = ({ data, t }) => {
+  if (!data?.length) return <div className="white-card" style={styles.card}><div style={styles.title}>{t('charts.env')}</div><EmptyChart t={t} /></div>;
   return (
-    <div className="glass-panel" style={styles.card}>
-      <div style={styles.title}>ENVIRONMENTAL %</div>
+    <div className="white-card" style={styles.card}>
+      <div style={styles.title}>{t('charts.env')}</div>
       <ResponsiveContainer width="100%" height={240}>
         <BarChart data={data} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
-          <CartesianGrid stroke="#1E2A3A" strokeDasharray="4 4" vertical={false} />
-          <XAxis dataKey="timestamp" tickFormatter={formatTime} {...axisStyle} />
-          <YAxis {...axisStyle} width={45} domain={[0, 100]} />
-          <Tooltip {...tooltipStyle} labelFormatter={formatTime} formatter={(v) => [`${v}%`, '']} cursor={{ fill: 'rgba(255, 255, 255, 0.05)' }} />
-          <Legend wrapperStyle={{ fontSize: 12, paddingTop: 8, fontFamily: "'JetBrains Mono', monospace", color: '#9CA3AF' }} />
-          <Bar dataKey="humidity_pct" fill="rgba(59, 130, 246, 0.6)" stroke="#E85D04" strokeWidth={1} radius={[2, 2, 0, 0]} name="Humidity" />
-          <Bar dataKey="moisture_pct" fill="rgba(45, 198, 83, 0.4)" stroke="#E85D04" strokeWidth={1} radius={[2, 2, 0, 0]} name="Moisture" />
+          <CartesianGrid stroke="#E2E8F0" strokeDasharray="4 4" vertical={false} />
+          <XAxis dataKey="timestamp" tickFormatter={formatTime} {...axisStyle} tick={{ fill: '#64748B' }} />
+          <YAxis {...axisStyle} width={45} domain={[0, 100]} tick={{ fill: '#64748B' }} />
+          <Tooltip {...tooltipStyle} labelFormatter={formatTime} formatter={(v) => [`${v}%`, '']} cursor={{ fill: '#F8FAFC' }} />
+          <Legend wrapperStyle={{ fontSize: 13, paddingTop: 8, color: '#64748B' }} />
+          <Bar dataKey="humidity_pct" fill="#3B82F6" radius={[4, 4, 0, 0]} name={t('sensors.humidity')} />
+          <Bar dataKey="moisture_pct" fill="#60A5FA" radius={[4, 4, 0, 0]} name={t('sensors.moisture')} />
         </BarChart>
       </ResponsiveContainer>
     </div>
   );
 };
 
-const HistoricalCharts = memo(({ history }) => (
-  <div style={styles.section}>
-    <MethaneChart data={history} />
-    <TemperatureChart data={history} />
-    <HumidityMoistureChart data={history} />
-  </div>
-));
+const HistoricalCharts = memo(({ history }) => {
+  const { t } = useTranslation();
+  return (
+    <div style={styles.section}>
+      <MethaneChart data={history} t={t} />
+      <TemperatureChart data={history} t={t} />
+      <HumidityMoistureChart data={history} t={t} />
+    </div>
+  );
+});
 
 export default HistoricalCharts;

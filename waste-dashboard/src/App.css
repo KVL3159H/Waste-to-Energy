@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700;800&family=Poppins:wght@400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 *,
 *::before,
@@ -9,41 +9,30 @@
 }
 
 body {
-  background-color: #0B1A2F;
-  /* Subtle grid overlay */
-  background-image: 
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
-  background-position: center center;
+  background-color: #F5F7FA;
+  /* Subtle dot grid overlay */
+  background-image: radial-gradient(#CBD5E1 1px, transparent 1px);
+  background-size: 24px 24px;
+  background-position: 0 0;
   
-  color: #E5E7EB;
-  font-family: 'Inter', 'Poppins', sans-serif;
+  color: #1E293B;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
 }
 
-/* Glassmorphism Classes */
-.glass-panel {
-  background: rgba(20, 30, 45, 0.7);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+/* Pristine White Card Classes */
+.white-card {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
   border-radius: 20px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.glass-panel:hover {
-  transform: translateY(-4px);
-  border-color: #E85D04;
-  box-shadow: 0 12px 25px rgba(232, 93, 4, 0.15);
-}
-
-/* Typography Overrides */
-.mono-text {
-  font-family: 'JetBrains Mono', 'Courier New', monospace;
-  color: #F8F9FA;
+.white-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
 }
 
 /* App Layout */
@@ -56,7 +45,7 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  min-width: 0; /* Prevents flex children from overflowing */
+  min-width: 0;
 }
 
 .main-content {
@@ -70,39 +59,20 @@ body {
 /* Page Common Styles */
 .page-header {
   margin-bottom: 32px;
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
 }
 
 .page-title {
-  font-family: 'Poppins', sans-serif;
-  font-size: 28px;
-  font-weight: 500;
-  color: #F8F9FA;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  margin-bottom: 8px;
-  display: inline-block;
-  border-bottom: 2px solid #E85D04;
-  padding-bottom: 4px;
+  font-size: 24px;
+  font-weight: 600;
+  color: #0F172A;
+  margin-bottom: 6px;
+  letter-spacing: -0.3px;
 }
 
 .page-subtitle {
-  font-size: 15px;
-  color: #9CA3AF;
-}
-
-.telemetry-badge {
-  background: rgba(232, 93, 4, 0.1);
-  border: 1px solid #E85D04;
-  color: #E85D04;
-  padding: 4px 12px;
-  border-radius: 4px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 1px;
+  font-size: 14px;
+  color: #64748B;
+  font-weight: 400;
 }
 
 /* Dashboard Grid layouts */
@@ -176,21 +146,19 @@ body {
 
 /* Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0B1A2F;
-  border-radius: 4px;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1E2A3A;
+  background: #CBD5E1;
   border-radius: 4px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #E85D04;
+  background: #94A3B8;
 }

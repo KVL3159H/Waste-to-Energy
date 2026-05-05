@@ -1,39 +1,35 @@
 import React from 'react';
 import { Download } from 'lucide-react';
 import { convertToCsv, todayString } from '../utils';
+import { useTranslation } from '../contexts/LanguageContext';
 
 const styles = {
   card: {
     padding: '24px',
   },
   title: {
-    fontSize: '15px',
+    fontSize: '16px',
     fontWeight: 600,
-    color: '#9CA3AF',
+    color: '#0F172A',
     marginBottom: '12px',
-    letterSpacing: '1px',
-    textTransform: 'uppercase',
+    letterSpacing: '-0.2px',
   },
   recordCount: {
-    fontSize: '12px',
+    fontSize: '13px',
     color: '#64748B',
     marginBottom: '24px',
-    fontFamily: "'JetBrains Mono', monospace",
   },
   button: (disabled) => ({
     width: '100%',
-    padding: '14px 20px',
-    background: disabled ? 'rgba(255, 255, 255, 0.05)' : 'rgba(232, 93, 4, 0.1)',
-    color: disabled ? '#64748B' : '#E85D04',
-    border: `1px solid ${disabled ? 'rgba(255, 255, 255, 0.1)' : '#E85D04'}`,
+    padding: '12px 20px',
+    background: disabled ? '#F1F5F9' : '#3B82F6',
+    color: disabled ? '#94A3B8' : '#FFFFFF',
+    border: 'none',
     borderRadius: '8px',
     fontSize: '14px',
     fontWeight: 600,
     cursor: disabled ? 'not-allowed' : 'pointer',
     transition: 'all 0.2s ease',
-    textAlign: 'center',
-    textTransform: 'uppercase',
-    letterSpacing: '1px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -42,6 +38,7 @@ const styles = {
 };
 
 export default function ExportButton({ historicalSensor }) {
+  const { t } = useTranslation();
   const records = historicalSensor || [];
   const isEmpty = records.length === 0;
 
@@ -61,10 +58,10 @@ export default function ExportButton({ historicalSensor }) {
   };
 
   return (
-    <div className="glass-panel" style={styles.card}>
-      <div style={styles.title}>DATA EXPORT</div>
+    <div className="white-card" style={styles.card}>
+      <div style={styles.title}>{t('export.title')}</div>
       <div style={styles.recordCount}>
-        {isEmpty ? 'NO RECORDS' : `${records.length.toLocaleString()} RECORDS AVAILABLE`}
+        {isEmpty ? t('export.norecords') : `${records.length.toLocaleString()} ${t('export.records')}`}
       </div>
       <button
         style={styles.button(isEmpty)}
@@ -72,19 +69,21 @@ export default function ExportButton({ historicalSensor }) {
         disabled={isEmpty}
         onMouseEnter={(e) => {
           if (!isEmpty) {
-            e.currentTarget.style.background = '#E85D04';
-            e.currentTarget.style.color = '#F8F9FA';
+            e.currentTarget.style.background = '#2563EB'; // Darker blue
+            e.currentTarget.style.transform = 'translateY(-1px)';
+            e.currentTarget.style.boxShadow = '0 4px 12px rgba(59, 130, 246, 0.3)';
           }
         }}
         onMouseLeave={(e) => {
           if (!isEmpty) {
-            e.currentTarget.style.background = 'rgba(232, 93, 4, 0.1)';
-            e.currentTarget.style.color = '#E85D04';
+            e.currentTarget.style.background = '#3B82F6';
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = 'none';
           }
         }}
       >
         <Download size={18} />
-        DOWNLOAD CSV
+        {t('export.button')}
       </button>
     </div>
   );

@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ref, onValue, remove } from 'firebase/database';
 import { database } from './firebase';
 import { snapshotToArray } from './utils';
+import { LanguageProvider } from './contexts/LanguageContext';
 
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
@@ -51,18 +52,20 @@ export default function App() {
   }
 
   return (
-    <Router>
-      <AppInner
-        connected={connected} setConnected={setConnected}
-        latestSensor={latestSensor} setLatestSensor={setLatestSensor}
-        latestClassification={latestClassification} setLatestClassification={setLatestClassification}
-        energyMetrics={energyMetrics} setEnergyMetrics={setEnergyMetrics}
-        dailySummary={dailySummary} setDailySummary={setDailySummary}
-        alerts={alerts} setAlerts={setAlerts}
-        historicalSensor={historicalSensor} setHistoricalSensor={setHistoricalSensor}
-        lastUpdated={lastUpdated} setLastUpdated={setLastUpdated}
-      />
-    </Router>
+    <LanguageProvider>
+      <Router>
+        <AppInner
+          connected={connected} setConnected={setConnected}
+          latestSensor={latestSensor} setLatestSensor={setLatestSensor}
+          latestClassification={latestClassification} setLatestClassification={setLatestClassification}
+          energyMetrics={energyMetrics} setEnergyMetrics={setEnergyMetrics}
+          dailySummary={dailySummary} setDailySummary={setDailySummary}
+          alerts={alerts} setAlerts={setAlerts}
+          historicalSensor={historicalSensor} setHistoricalSensor={setHistoricalSensor}
+          lastUpdated={lastUpdated} setLastUpdated={setLastUpdated}
+        />
+      </Router>
+    </LanguageProvider>
   );
 }
 

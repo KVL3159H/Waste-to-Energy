@@ -1,71 +1,88 @@
 import React from 'react';
 import { formatDateTime } from '../utils';
+import { useTranslation } from '../contexts/LanguageContext';
 
 const styles = {
   header: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
     padding: '20px 36px',
-    background: 'rgba(11, 26, 47, 0.8)',
-    backdropFilter: 'blur(10px)',
-    borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+    background: '#FFFFFF',
+    borderBottom: '1px solid #E2E8F0',
     flexWrap: 'wrap',
     gap: '16px',
+  },
+  title: {
+    fontSize: '18px',
+    fontWeight: 600,
+    color: '#0F172A',
+    letterSpacing: '-0.2px',
   },
   rightArea: {
     display: 'flex',
     alignItems: 'center',
     gap: '24px',
+    marginLeft: 'auto',
   },
   timestamp: {
     fontSize: '13px',
-    color: '#E85D04',
-    fontFamily: "'JetBrains Mono', monospace",
-    letterSpacing: '1px',
-    textTransform: 'uppercase',
+    color: '#64748B',
+    fontFamily: "'Inter', sans-serif",
   },
   status: (connected) => ({
     display: 'flex',
     alignItems: 'center',
     gap: '8px',
-    padding: '6px 16px',
-    background: connected ? 'rgba(45, 198, 83, 0.1)' : 'rgba(211, 47, 47, 0.1)',
-    border: `1px solid ${connected ? '#2DC653' : '#D32F2F'}`,
-    borderRadius: '40px',
-    fontSize: '11px',
-    fontFamily: "'JetBrains Mono', monospace",
-    fontWeight: 700,
-    letterSpacing: '1px',
-    color: connected ? '#2DC653' : '#D32F2F',
-    textTransform: 'uppercase',
+    padding: '6px 14px',
+    background: connected ? '#ECFDF5' : '#FEF2F2',
+    border: `1px solid ${connected ? '#A7F3D0' : '#FECACA'}`,
+    borderRadius: '20px',
+    fontSize: '13px',
+    fontWeight: 500,
+    color: connected ? '#059669' : '#DC2626',
   }),
   dot: (connected) => ({
     width: '8px',
     height: '8px',
     borderRadius: '50%',
-    background: connected ? '#2DC653' : '#D32F2F',
-    boxShadow: connected ? '0 0 8px #2DC653' : '0 0 8px #D32F2F',
-    animation: connected ? 'pulse-green 1.5s infinite' : 'none',
+    background: connected ? '#10B981' : '#EF4444',
   }),
+  langButton: {
+    background: '#F1F5F9',
+    border: '1px solid #E2E8F0',
+    padding: '6px 12px',
+    borderRadius: '8px',
+    fontSize: '13px',
+    fontWeight: 600,
+    color: '#3B82F6',
+    cursor: 'pointer',
+    transition: 'all 0.2s',
+  }
 };
 
 export default function Header({ connected, lastUpdated }) {
+  const { t, language, toggleLanguage } = useTranslation();
+
   return (
     <header style={styles.header}>
+      <div>
+        <div style={styles.title}>{t('header.title')}</div>
+      </div>
       <div style={styles.rightArea}>
-        {lastUpdated && <div style={styles.timestamp}>SYS_TIME: {formatDateTime(lastUpdated)}</div>}
+        {lastUpdated && <div style={styles.timestamp}>{t('header.sync')} {formatDateTime(lastUpdated)}</div>}
         <div style={styles.status(connected)}>
           <div style={styles.dot(connected)} />
-          {connected ? 'LIVE TELEMETRY' : 'SIGNAL LOST'}
+          {connected ? t('header.connected') : t('header.offline')}
         </div>
+        <button 
+          style={styles.langButton} 
+          onClick={toggleLanguage}
+          title="Switch Language"
+        >
+          {language === 'en' ? 'தமிழ்' : 'English'}
+        </button>
       </div>
-      <style>{`
-        @keyframes pulse-green {
-          0%, 100% { opacity: 1; transform: scale(1); }
-          50% { opacity: 0.6; transform: scale(1.2); }
-        }
-      `}</style>
     </header>
   );
 }
